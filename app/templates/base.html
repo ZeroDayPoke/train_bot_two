@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <!-- Title -->
+    <title>{% block title %}C19{% endblock %}</title>
+
+    <!-- Meta -->
+    {% include 'default/meta.html' %}
+
+    <!-- Links -->
+    {% include 'default/links.html' %} {% block css %}{% endblock %}
+  </head>
+  <body class="text-light bg-dark">
+    {% include 'default/header.html' %}
+    <main role="main" class="container">
+      {% for message in get_flashed_messages() %}
+      <div class="alert alert-danger">{{ message }}</div>
+      {% endfor %} {% block content %}{% endblock %} {% block script %}{%
+      endblock %}
+      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+      {% block display %}{% endblock %}
+    </main>
+    {% include 'default/footer.html' %}
+  </body>
+</html>

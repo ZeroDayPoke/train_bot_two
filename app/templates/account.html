@@ -1,0 +1,36 @@
+{% extends "base.html" %} 
+
+{% block title %} Account - C19 {% endblock %} 
+
+{% block content %}
+<section class="row">
+  <article class="col-md-6">
+    <div class="mt-4" id="account_info">
+      <h2>Account Information</h2>
+      <p><strong>Username:</strong> {{ current_user.username }}</p>
+      <p><strong>Email:</strong> {{ current_user.email }}</p>
+      <p><strong>Account Created:</strong> {{ current_user.created_at }}</p>
+      <p><strong>Last Updated:</strong> {{ current_user.updated_at }}</p>
+    </div>
+
+    <div class="mt-4" id="change_password">
+      <h2>Change Password</h2>
+      <form method="POST" action="{{ url_for('auth_routes.change_password') }}">
+        <div class="form-group">
+          <label for="current_password">Current Password</label>
+          <input type="password" class="form-control" id="current_password" name="current_password" required>
+        </div>
+        <div class="form-group">
+          <label for="new_password">New Password</label>
+          <input type="password" class="form-control" id="new_password" name="new_password" required>
+        </div>
+        <div class="form-group">
+          <label for="confirm_password">Confirm New Password</label>
+          <input type="password" class="form-control" id="confirm_password" name="confirm_password" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Change Password</button>
+      </form>
+    </div>
+  </article>
+</section>
+{% endblock %}
