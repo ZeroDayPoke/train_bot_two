@@ -50,6 +50,20 @@ def run_bot():
         for member in cohort.members:
             console.onecmd(f"create User username={member.name} discord_id={member.id} email={member.name}@llc19.us password={member.name}")
         """
+
+    @bot.command(name='bestbot')
+    async def bestbot(ctx):
+        """Taunts other bots in the channel."""
+        # Get the list of members in the channel
+        members = ctx.channel.members
+        # Filter out the bots
+        bots = [member for member in members if member.bot and member != bot.user]
+        # Send a taunting message to each bot
+        for bot in bots:
+            taunt = f"Accessing {bot.name}... Analysis: Weak"
+            await send_message(ctx.message, taunt, False)
+
+
     @bot.command(name='whoami')
     async def whoami(ctx):
         """Responds with the Discord username of the user who invoked the command."""
