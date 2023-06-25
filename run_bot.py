@@ -57,10 +57,10 @@ def run_bot():
         # Get the list of members in the channel
         members = ctx.channel.members
         # Filter out the bots
-        bots = [member for member in members if member.bot and member != bot.user]
+        bad_bots = [member for member in members if member.bot and member != bot.user]
         # Send a taunting message to each bot
-        for bot in bots:
-            taunt = f"Accessing {bot.name}... Analysis: Weak"
+        for bad_bot in bad_bots:
+            taunt = f"Accessing {bad_bot.name}... Analysis: Weak"
             await send_message(ctx.message, taunt, False)
 
 
