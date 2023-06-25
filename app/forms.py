@@ -50,3 +50,6 @@ class ProjectForm(ModelForm):
     status = SelectField('Status', choices=[('Planning', 'Planning'), (
         'Active', 'Active'), ('Complete', 'Complete'), ('Unknown', 'Unknown')])
     meeting_days = QuerySelectMultipleField('Meeting Days', query_factory=lambda: MeetingDay.query, get_label='name')
+    repo_link = StringField('Repository Link')
+    version = StringField('Version')
+    deadline = StringField('Deadline')
