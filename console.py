@@ -239,5 +239,12 @@ class Bot_Console(cmd.Cmd):
             self.print("HCF")
 
 
+    def user_exists(self, username):
+        """Check if a user exists and return a boolean value."""
+        self.onecmd(f"show User {username}")
+        response = self.get_output()
+        return "not found" not in response
+
+
 if __name__ == "__main__":
     Bot_Console().cmdloop()

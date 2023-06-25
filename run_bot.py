@@ -66,16 +66,14 @@ def run_bot():
         # Get the user's Discord username
         username = ctx.author.name
         # Use the console to check if a User with that username exists
-        console.onecmd(f"show User {username}")
-        console_response = console.get_output()
-        if "not found" not in console_response:
+        if console.user_exists(username):
             # If the user exists, send them their login email
             await ctx.send(f'You already have an account. Your login email is {username}@llc19.us.')
         else:
             # If the user doesn't exist, use the console to create a new User
             console.onecmd(f"create User username={username} discord_id={ctx.author.id} email={username}@llc19.us password={username}")
-            console_response = console.get_output()
             await ctx.send(f'New account created. Your login email is {username}@llc19.us.')
+
 
     @bot.event
     async def on_message(message):
