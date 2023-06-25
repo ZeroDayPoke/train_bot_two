@@ -21,7 +21,8 @@ def add_project():
             description=form.description.data,
             status=form.status.data,
             author_id=current_user.id,
-            version=form.version.data
+            version=form.version.data,
+            meeting_days=form.meeting_days.data
         )
         related_users = User.query.filter(
             User.id.in_(form.related_users.data)).all()
@@ -98,6 +99,7 @@ def update_project(project_id):
         roles = Role.query.filter(Role.id.in_(form.roles.data)).all()
         project.related_users = related_users
         project.roles = roles
+        project.meeting_days=form.meeting_days.data
         db.session.commit()
         flash('Project updated successfully.')
         return redirect(url_for('project_routes.update_project', project_id=project.id,

@@ -7,6 +7,19 @@ from sqlalchemy.orm import relationship
 from sqlalchemy import Enum
 
 
+class MeetingDay(BaseModel):
+    __tablename__ = 'meeting_days'
+    name = db.Column(db.String(64), unique=True, nullable=False)
+
+
+meeting_days = db.Table('project_meeting_days',
+                        db.Column('project_id', db.String(60), db.ForeignKey(
+                            'projects.id'), primary_key=True),
+                        db.Column('meeting_day_id', db.String(60), db.ForeignKey(
+                            'meeting_days.id'), primary_key=True)
+                        )
+
+
 class Project(BaseModel):
     """
     Project Model
@@ -31,8 +44,10 @@ class Project(BaseModel):
     author_id = db.Column(db.String(60), db.ForeignKey('users.id'))
     version = db.Column(db.String(64), nullable=True, default='0.0.0')
 
-    start_date = db.Column(db.DateTime, nullable=True, default=datetime.utcnow())
-    deadline = db.Column(db.DateTime, default=lambda: datetime.utcnow() + timedelta(days=30))
+    start_date = db.Column(db.DateTime, nullable=True,
+                           default=datetime.utcnow())
+    deadline = db.Column(
+        db.DateTime, default=lambda: datetime.utcnow() + timedelta(days=30))
 
     # Relationships
     related_users = relationship(
@@ -40,6 +55,8 @@ class Project(BaseModel):
     roles = relationship('Role', secondary=project_roles,
                          backref=db.backref('projects', lazy='dynamic'))
     author = relationship('User', backref='lead_projects')
+    meeting_days = db.relationship(
+        'MeetingDay', secondary=meeting_days, backref=db.backref('projects', lazy='dynamic'))
 
     def __repr__(self):
         return '<Project {}>'.format(self.name)
