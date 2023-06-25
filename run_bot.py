@@ -12,7 +12,8 @@ def run_bot():
     TOKEN = os.getenv('DISCORD_TOKEN')
     AUTHOR_ID = int(os.getenv('AUTHOR_ID'))
     GUILD_ID = int(os.getenv('GUILD_ID'))
-    CHANNEL_ID = int(os.getenv('CHANNEL_ID'))
+    CHANNEL_ID_DEV = int(os.getenv('CHANNEL_ID_DEV'))
+    CHANNEL_ID_PROD = int(os.getenv('CHANNEL_ID_PROD'))
 
     intents = discord.Intents.all()
     bot = commands.Bot(command_prefix='!', intents=intents)
@@ -59,7 +60,7 @@ def run_bot():
         if message.author == bot.user:
             return
 
-        if not (message.channel.id == CHANNEL_ID or message.author.id == AUTHOR_ID):
+        if not (message.channel.id == CHANNEL_ID_PROD or message.author.id == AUTHOR_ID or message.channel.id == CHANNEL_ID_DEV):
             return
 
         message_content = str(message.content)
