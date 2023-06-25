@@ -5,6 +5,7 @@ import cmd
 from app import create_app, db
 from app.models import Project
 from app.models import User, Role
+from inspect import getmembers, ismethod
 
 # Create Flask application from the factory
 app = create_app()
@@ -245,6 +246,19 @@ class Bot_Console(cmd.Cmd):
         self.onecmd(f"show User {username}")
         response = self.get_output()
         return "not found" not in response
+
+
+    def do_help(self, arg):
+        """Display a list of available commands and their descriptions."""
+        commands = {name[3:]: func.__doc__ for name, func in getmembers(self, predicate=ismethod) if name.startswith('do_')}
+        if arg:
+            # If the user has specified a command, display help for that command
+            help_text = commands.get(arg, f"No such command: {arg}")
+        else:
+            # If no command is specified, display a list of all commands
+            help_text = "Available commands:\n" + "\n".join(f"{name}: {desc}" for name, desc in commands.items())
+        self.print(help_text)
+        print(help_text)
 
 
 if __name__ == "__main__":
