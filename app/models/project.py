@@ -43,6 +43,7 @@ class Project(BaseModel):
 
     author_id = db.Column(db.String(60), db.ForeignKey('users.id'))
     version = db.Column(db.String(64), nullable=True, default='0.0.0')
+    repo_link = db.Column(db.String(256), nullable=True)
 
     start_date = db.Column(db.DateTime, nullable=True,
                            default=datetime.utcnow())
