@@ -85,16 +85,15 @@ class Bot_Console(cmd.Cmd):
                     f"Invalid class. Available classes: {', '.join(class_dictionary.keys())}")
                 return
 
-            # Try to get the instance by ID
-            instance = cls.query.get(instance_id)
-            # If not found, try to get the instance by username
+            instance = db.session.get(cls, instance_id)
             if instance is None and class_name == 'User':
                 instance = cls.query.filter_by(username=instance_id).first()
-
             if instance is None:
                 self.print(f"{class_name} with ID {instance_id} not found")
+                print(f"{class_name} with ID {instance_id} not found")
             else:
                 self.print(instance)
+                print(instance)
 
     def do_destroy(self, arg):
         """Deletes an instance of a class: destroy <class> <id>"""
