@@ -92,8 +92,9 @@ class Bot_Console(cmd.Cmd):
                 self.print(f"{class_name} with ID {instance_id} not found")
                 print(f"{class_name} with ID {instance_id} not found")
             else:
-                self.print(instance)
+                self.print(instance.__repr__())
                 print(instance)
+
 
     def do_destroy(self, arg):
         """Deletes an instance of a class: destroy <class> <id>"""
@@ -197,10 +198,7 @@ class Bot_Console(cmd.Cmd):
 
     def get_output(self):
         """Returns cat'd output"""
-        output = self.stdout.getvalue()
-        self.stdout.truncate(0)
-        self.stdout.seek(0)
-        return str(output)
+        return self.last_output
 
     def onecmd(self, line):
         """Override the onecmd method to print the output of the command"""
