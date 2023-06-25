@@ -55,6 +55,11 @@ def run_bot():
         """Responds with the Discord username of the user who invoked the command."""
         await ctx.send(f'You are {ctx.author.name}')
 
+    @bot.command(name='canhasgui')
+    async def canhasgui(ctx):
+        """Responds to user requesting GUI."""
+        await ctx.send(f"GUI: https://llc19.us")
+
     @bot.event
     async def on_message(message):
         if message.author == bot.user:
