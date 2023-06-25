@@ -15,7 +15,7 @@ class Role(BaseModel):
     name = db.Column(db.String(64), unique=True)
 
     def __repr__(self):
-        return '<Role {}>'.format(self.name)
+        return '<Role {}'.format(self.name)
 
 
 class User(UserMixin, BaseModel):
@@ -44,7 +44,7 @@ class User(UserMixin, BaseModel):
 
     def __repr__(self):
         """User representation"""
-        return f'<User {self.username}>'
+        return f'{self.username}'
 
     def set_password(self, pwd):
         """encrypts password"""
