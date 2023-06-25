@@ -197,7 +197,10 @@ class Bot_Console(cmd.Cmd):
 
     def get_output(self):
         """Returns cat'd output"""
-        return self.last_output
+        output = self.stdout.getvalue()
+        self.stdout.truncate(0)
+        self.stdout.seek(0)
+        return str(output)
 
     def onecmd(self, line):
         """Override the onecmd method to print the output of the command"""
