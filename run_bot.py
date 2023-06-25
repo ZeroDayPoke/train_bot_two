@@ -62,25 +62,20 @@ def run_bot():
 
     @bot.command(name='canhasaccount')
     async def canhasaccount(ctx):
-        from app import app, db
-        from app.models import User
-
         """Checks if the user has an account, if not creates one."""
-        with app.app_context():
-            # Get the user's Discord username
-            username = ctx.author.name
-            # Query the database for a User with that username
-            user = User.query.filter_by(username=username).first()
-            if user is not None:
-                # If the user exists, send them their login email
-                await ctx.send(f'You already have an account. Your login email is {user.email}.')
-            else:
-                # If the user doesn't exist, create a new User
-                new_user = User(username=username, discord_id=ctx.author.id, email=f'{username}@llc19.us')
-                new_user.set_password(username)
-                db.session.add(new_user)
-                db.session.commit()
-                await ctx.send(f'New account created. Your login email is {new_user.email}.')
+        # Get the user's Discord username
+        username = ctx.author.name
+        # Use the console to check if a User with that username exists
+        console.onecmd(f"show User {username}")
+        console_response = console.get_output()
+        if "not found" not in console_response:
+            # If the user exists, send them their login email
+            await ctx.send(f'You already have an account. Your login email is {username}@llc19.us.')
+        else:
+            # If the user doesn't exist, use the console to create a new User
+            console.onecmd(f"create User username={username} discord_id={ctx.author.id} email={username}@llc19.us password={username}")
+            console_response = console.get_output()
+            await ctx.send(f'New account created. Your login email is {username}@llc19.us.')
 
     @bot.event
     async def on_message(message):
