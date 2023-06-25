@@ -49,6 +49,10 @@ def run_bot():
         for member in cohort.members:
             console.onecmd(f"create User username={member.name} discord_id={member.id} email={member.name}@llc19.us password={member.name}")
         """
+    @bot.command(name='whoami')
+    async def whoami(ctx):
+        """Responds with the Discord username of the user who invoked the command."""
+        await ctx.send(f'You are {ctx.author.name}')
 
     @bot.event
     async def on_message(message):
@@ -60,16 +64,16 @@ def run_bot():
 
         message_content = str(message.content)
 
-        if not message_content.startswith("tb "):
-            return
+        if message_content.startswith("tb "):
+            console.onecmd(message_content[3:])
+            console_response = console.get_output()
+            print(console_response)
+            if console_response == 'HCF':
+                await send_message(message, 'Better dead than red...', False)
+                await bot.close()
+            privacy_flag = isinstance(message.channel, discord.DMChannel)
+            await send_message(message, console_response, privacy_flag)
 
-        console.onecmd(message_content[3:])
-        console_response = console.get_output()
-        print(console_response)
-        if console_response == 'HCF':
-            await send_message(message, 'Better dead than red...', False)
-            await bot.close()
-        privacy_flag = isinstance(message.channel, discord.DMChannel)
-        await send_message(message, console_response, privacy_flag)
+        await bot.process_commands(message)
 
     bot.run(TOKEN)
