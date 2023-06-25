@@ -59,4 +59,4 @@ class Project(BaseModel):
         'MeetingDay', secondary=meeting_days, backref=db.backref('projects', lazy='dynamic'))
 
     def __repr__(self):
-        return '<Project {}>'.format(self.name)
+        return f'<Project {self.name}, Description: {self.description}, Status: {self.status}, Deadline: {self.deadline}, Author: {self.author.username}, Version: {self.version}, Start Date: {self.start_date}, Meeting Days: {[day.name for day in self.meeting_days]}>'
