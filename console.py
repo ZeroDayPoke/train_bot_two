@@ -85,7 +85,12 @@ class Bot_Console(cmd.Cmd):
                     f"Invalid class. Available classes: {', '.join(class_dictionary.keys())}")
                 return
 
-            instance = db.session.get(cls, instance_id)
+            # Try to get the instance by ID
+            instance = cls.query.get(instance_id)
+            # If not found, try to get the instance by username
+            if instance is None and class_name == 'User':
+                instance = cls.query.filter_by(username=instance_id).first()
+
             if instance is None:
                 self.print(f"{class_name} with ID {instance_id} not found")
             else:
