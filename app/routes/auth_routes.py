@@ -36,10 +36,14 @@ def signin():
     form = SigninForm()
     if form.validate_on_submit():
         user = User.query.filter_by(email=form.email.data).first()
-        login_user(user)
-        flash('Successfully signed in.')
-        return redirect(url_for('main_routes.index'))
+        if user and user.check_password(form.password.data):
+            login_user(user)
+            flash('Successfully signed in.')
+            return redirect(url_for('main_routes.index'))
+        else:
+            flash('Invalid email or password. Please try again.')
     return render_template('signin.html', form=form)
+
 
 @auth_routes.route('/signout', methods=['GET'])
 @login_required
