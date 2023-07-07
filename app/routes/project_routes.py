@@ -37,9 +37,6 @@ def add_project():
         return redirect(url_for('project_routes.view_project',
                                 current_user=current_user,
                                 project_id=new_project.id))
-    else:
-        print(form.errors)
-        flash('Project not added.', 'danger')
     return render_template('projects.html', form=form)
 
 
