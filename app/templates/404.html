@@ -1,0 +1,12 @@
+<!-- app/templates/404.html -->
+{% extends "base.html" %}
+{% block title %}Page Not Found{% endblock %}
+{% block content %}
+<div class="text-center">
+  <h1 class="display-4">Oops!</h1>
+  <p class="lead">We can't seem to find the page you're looking for.</p>
+  <img src="{{ url_for('static', filename='images/trainbottwo.png') }}" alt="Train Bot Two" class="img-fluid">
+  <p class="lead">Error 404: Page not found</p>
+  <a href="{{ url_for('main_routes.index') }}" class="btn btn-primary">Return to Home</a>
+</div>
+{% endblock %}

@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 """Initialize Flask app"""
 
-from flask import Flask
+from flask import Flask, render_template
 from config import config
 from flask_login import LoginManager
 from app.models import db, User
@@ -29,6 +29,10 @@ def create_app(config_name='default'):
     def shutdown_session(exception=None):
         # Remove the database session after each request
         db.session.remove()
+
+    @app.errorhandler(404)
+    def page_not_found(e):
+        return render_template('404.html'), 404
 
     if app.config.get('OPEN_BROWSER'):
         import webbrowser
