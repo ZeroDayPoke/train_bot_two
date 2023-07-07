@@ -47,7 +47,7 @@ class User(UserMixin, BaseModel):
 
     def __repr__(self):
         """User representation"""
-        return f'{self.username}'
+        return f'{self.username} - {self.id}'
 
     def set_password(self, pwd):
         """encrypts password"""
