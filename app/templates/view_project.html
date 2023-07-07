@@ -44,6 +44,10 @@
       >
         Update
       </button>
+      {% elif current_user not in project.related_users %}
+      <form action="{{ url_for('project_routes.join_project', project_id=project.id) }}" method="post">
+        <button type="submit" class="btn btn-primary">Join Project</button>
+      </form>
       {% endif %}
     </div>
   </div>

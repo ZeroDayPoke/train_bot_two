@@ -3,11 +3,9 @@
 # app/forms.py
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField, SelectMultipleField, SelectField, TextAreaField
-from wtforms.validators import ValidationError, DataRequired, Email, EqualTo
+from wtforms.validators import ValidationError, DataRequired, Email
 from wtforms.fields import SelectMultipleField
-from wtforms.widgets import ListWidget, CheckboxInput
 from wtforms_alchemy import ModelForm as WTFormsAlchemyModelForm, QuerySelectMultipleField
-from uuid import UUID
 from app.models import User, Project, Role, MeetingDay
 
 

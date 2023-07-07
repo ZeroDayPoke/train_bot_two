@@ -2,7 +2,6 @@
 """Auth Routes for the app"""
 from flask import Blueprint, render_template, redirect, url_for, flash, request
 from flask_login import login_user, logout_user, login_required, current_user
-from werkzeug.security import generate_password_hash, check_password_hash
 from ..models import db, User, Role
 from ..forms import SignupForm, SigninForm
 
@@ -12,8 +11,7 @@ auth_routes = Blueprint('auth_routes', __name__, url_prefix='/auth')
 def signup():
     form = SignupForm()
     if form.validate_on_submit():
-        hashed_password = generate_password_hash(form.password.data, method='sha256')
-        new_user = User(username=form.username.data, email=form.email.data, password=hashed_password)
+        new_user = User(username=form.username.data, email=form.email.data, password=form.password.data)
         
         """role_name = form.role.data
         role = Role.query.filter_by(name=role_name).first()
@@ -28,7 +26,6 @@ def signup():
         flash('Congratulations, you are now a registered user!')
         return redirect(url_for('main_routes.index'))
     return render_template('signup.html', form=form)
-
 
 
 @auth_routes.route('/signin', methods=['GET', 'POST'])
@@ -68,7 +65,7 @@ def change_password():
     confirm_password = request.form.get('confirm_password')
 
     # Verify that the current password is correct
-    if not check_password_hash(current_user.password_hash, current_password):
+    if not current_user.check_password(current_password):
         flash('Current password is incorrect.')
         return redirect(url_for('auth_routes.account'))
 
@@ -78,7 +75,7 @@ def change_password():
         return redirect(url_for('auth_routes.account'))
 
     # Update the user's password
-    current_user.password_hash = generate_password_hash(new_password)
+    current_user.set_password(new_password)
     db.session.commit()
 
     flash('Your password has been updated.')

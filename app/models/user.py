@@ -2,11 +2,11 @@
 """User and Role Models"""
 
 from datetime import datetime, timedelta
-from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
 from .base import BaseModel, db
 from sqlalchemy.orm import relationship
 from .associations import user_roles, user_projects
+from flask_bcrypt import Bcrypt
 
 
 class Role(BaseModel):
@@ -16,6 +16,9 @@ class Role(BaseModel):
 
     def __repr__(self):
         return '<Role {}'.format(self.name)
+
+
+bcrypt = Bcrypt()
 
 
 class User(UserMixin, BaseModel):
@@ -48,14 +51,14 @@ class User(UserMixin, BaseModel):
 
     def set_password(self, pwd):
         """encrypts password"""
-        self.password_hash = generate_password_hash(pwd)
+        self.password_hash = bcrypt.generate_password_hash(pwd).decode('utf-8')
 
     @property
     def password(self):
         raise AttributeError('password: write-only field')
 
     def check_password(self, password):
-        return check_password_hash(self.password_hash, password)
+        return bcrypt.check_password_hash(self.password_hash, password)
 
     def has_role(self, role_name):
         return any(role.name == role_name for role in self.roles)

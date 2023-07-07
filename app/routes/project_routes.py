@@ -100,8 +100,8 @@ def update_project(project_id):
         roles = Role.query.filter(Role.id.in_(form.roles.data)).all()
         project.related_users = related_users
         project.roles = roles
-        project.meeting_days=form.meeting_days.data
-        project.repo_link=form.repo_link.data
+        project.meeting_days = form.meeting_days.data
+        project.repo_link = form.repo_link.data
         db.session.commit()
         flash('Project updated successfully.')
         return redirect(url_for('project_routes.update_project', project_id=project.id,
@@ -109,3 +109,21 @@ def update_project(project_id):
 
     return render_template('view_project.html', form=form, project=project,
                            current_user=current_user)
+
+
+@project_routes.route('/<project_id>/join', methods=['POST'])
+@login_required
+def add_user_to_project(project_id):
+    user = current_user
+    project = Project.query.get(project_id)
+    if project is None:
+        flash('Project not found.')
+        return redirect(url_for('project_routes.all_projects'))
+    if user not in project.related_users:
+        project.related_users.append(user)
+        db.session.commit()
+        flash('You have joined the project.')
+    else:
+        flash('You are already a member of this project.')
+    return redirect(url_for('project_routes.view_project', project_id=project.id,
+                            current_user=current_user))
