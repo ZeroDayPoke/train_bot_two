@@ -4,7 +4,7 @@
 import cmd
 from app import create_app, db
 from app.models import Project
-from app.models import User, Role
+from app.models import User, Role, MeetingDay
 from inspect import getmembers, ismethod
 
 # Create Flask application from the factory
@@ -18,7 +18,8 @@ with app.app_context():
 class_dictionary = {
     'Project': Project,
     'User': User,
-    'Role': Role
+    'Role': Role,
+    'MeetingDay': MeetingDay
 }
 
 
