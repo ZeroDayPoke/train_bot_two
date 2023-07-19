@@ -1,7 +1,4 @@
 **/__pycache__/
-
 .env
-
-setup/
-
-./config.py
+**/setup/
+config.py
