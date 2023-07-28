@@ -70,7 +70,7 @@ def run_bot():
         await ctx.send(f'You are {ctx.author.name}')
 
     @bot.command(name='whoagoodbot')
-    async def whoami(ctx):
+    async def whoagoodbot(ctx):
         """Priase Train Bot"""
         await ctx.send(f'{bot.user} is a good bot!')
 
