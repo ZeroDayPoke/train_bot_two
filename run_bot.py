@@ -69,6 +69,11 @@ def run_bot():
         """Responds with the Discord username of the user who invoked the command."""
         await ctx.send(f'You are {ctx.author.name}')
 
+    @bot.command(name='whoagoodbot')
+    async def whoami(ctx):
+        """Priase Train Bot"""
+        await ctx.send(f'{bot.user} is a good bot!')
+
     @bot.command(name='canhasgui')
     async def canhasgui(ctx):
         """Responds to user requesting GUI."""
