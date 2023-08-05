@@ -52,10 +52,25 @@ def signout():
     return redirect(url_for('main_routes.index'))
 
 
-@auth_routes.route('/account', methods=['GET'])
+@auth_routes.route('/account', methods=['GET', 'POST'])
 @login_required
 def account():
-    form = ProfileUpdateForm()
+    form = ProfileUpdateForm(obj=current_user)
+
+    if form.validate_on_submit():
+        if form.user_image.data:
+            filename = photos.save(form.user_image.data)
+            current_user.image_path = filename
+        current_user.bio = form.bio.data
+        current_user.discord_id = form.discord_id.data
+        current_user.github_username = form.github_username.data
+        current_user.linkedin_link = form.linkedin_link.data
+        current_user.twitter_link = form.twitter_link.data
+        current_user.website_link = form.website_link.data
+        db.session.commit()
+        flash('Profile updated successfully!', 'success')
+        return redirect(url_for('auth_routes.account'))
+
     return render_template('account.html', current_user=current_user, form=form)
 
 
@@ -81,18 +96,4 @@ def change_password():
     db.session.commit()
 
     flash('Your password has been updated.')
-    return redirect(url_for('auth_routes.account'))
-
-@auth_routes.route('/update_profile', methods=['POST'])
-@login_required
-def update_profile():
-    form = ProfileUpdateForm()
-
-    if form.validate_on_submit():
-        if form.user_image.data:
-            filename = photos.save(form.user_image.data)
-            current_user.image_path = filename
-            db.session.commit()
-            flash('Profile image updated!', 'success')
-
     return redirect(url_for('auth_routes.account'))

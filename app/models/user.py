@@ -33,7 +33,10 @@ class User(UserMixin, BaseModel):
     token_generated_at = db.Column(db.DateTime, default=datetime.utcnow)
     github_username = db.Column(db.String(64), unique=True, index=True)
     image_path = db.Column(db.String(256), nullable=True, default="default_employee.jpg")
-    bio = db.Column(db.String(256), nullable=True)
+    bio = db.Column(db.String(256), nullable=True, default="A passionate member of the team!")
+    linkedin_link = db.Column(db.String(64), unique=True, index=True, nullable=True)
+    twitter_link = db.Column(db.String(64), unique=True, index=True, nullable=True)
+    website_link = db.Column(db.String(64), unique=True, index=True, nullable=True)
 
     # Relationships
     roles = relationship('Role', secondary=user_roles,
@@ -69,3 +72,4 @@ class User(UserMixin, BaseModel):
     def token_expired(self):
         expiration_time = self.token_generated_at + timedelta(hours=24)
         return datetime.utcnow() > expiration_time
+

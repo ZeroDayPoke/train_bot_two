@@ -23,7 +23,13 @@ def seed_data():
 
             # If admin user does not exist, create it
             if not admin_user:
-                admin_user = User(username="ADMIN", email="dev@dev.dev", password="dev")
+                admin_user = User(username="ADMIN",
+                                  email="dev@dev.dev",
+                                  password="dev",
+                                  github_username="ZeroDayPoke",
+                                  website_link="zerodaypoke.com",
+                                  bio="UwU",
+                                  linkedin_link="https://www.linkedin.com/in/zerodaypoke/",)
                 admin_user.roles.append(admin_role)
                 db.session.add(admin_user)
 

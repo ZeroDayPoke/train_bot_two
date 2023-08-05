@@ -13,6 +13,16 @@ from app.utils.upload_sets import photos
 
 class ProfileUpdateForm(FlaskForm):
     user_image = FileField('Upload Profile Image', validators=[FileAllowed(photos, 'Images only!')])
+    username = StringField('Username', validators=[DataRequired()])
+    email = StringField('Email', validators=[DataRequired(), Email()])
+    discord_id = StringField('Discord ID')
+    github_username = StringField('GitHub Username')
+    bio = TextAreaField('Bio', render_kw={"rows": 5})
+    linkedin_link = StringField('LinkedIn Profile Link')
+    twitter_link = StringField('Twitter Profile Link')
+    website_link = StringField('Personal Website Link')
+
+    submit = SubmitField('Update Profile')
 
 class SignupForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired()])

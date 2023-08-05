@@ -1,5 +1,8 @@
-{% extends "base.html" %} {% block title %} Account - C19 {% endblock %} {%
-block content %}
+{% extends "base.html" %} 
+{% from "macros.html" import render_field %}
+{% block title %} Account - C19 {% endblock %} 
+
+{% block content %}
 <section class="row">
   <article class="col-md-6">
     <div class="mt-4" id="account_info">
@@ -8,6 +11,7 @@ block content %}
       <p><strong>Email:</strong> {{ current_user.email }}</p>
       <p><strong>Account Created:</strong> {{ current_user.created_at }}</p>
       <p><strong>Last Updated:</strong> {{ current_user.updated_at }}</p>
+      <p><strong>Github Username:</strong> {{ current_user.github_username }}</p>
       {% if current_user.image_path %}
       <img
         src="{{ url_for('static', filename='images/users/' + current_user.image_path) }}"
@@ -16,53 +20,38 @@ block content %}
       />
       {% endif %}
     </div>
-    <div class="mt-4" id="upload_image">
-      <h2>Upload Image</h2>
-      <form
-        method="POST"
-        action="{{ url_for('auth_routes.update_profile') }}"
-        enctype="multipart/form-data"
-      >
+
+    <div class="mt-4" id="edit_profile">
+      <h2>Edit Profile</h2>
+      <form method="POST" action="{{ url_for('auth_routes.account') }}" enctype="multipart/form-data">
         {{ form.hidden_tag() }}
-        <div class="form-group">
-          {{ form.user_image.label }} {{
-          form.user_image(class="form-control-file", accept="image/*") }}
-        </div>
-        <button type="submit" class="btn btn-primary">Upload</button>
+        {{ render_field(form.user_image, class_="form-control-file") }}
+        {{ render_field(form.username, class_="form-control") }}
+        {{ render_field(form.email, class_="form-control") }}
+        {{ render_field(form.discord_id, class_="form-control") }}
+        {{ render_field(form.github_username, class_="form-control") }}
+        {{ render_field(form.bio, class_="form-control") }}
+        {{ render_field(form.linkedin_link, class_="form-control") }}
+        {{ render_field(form.twitter_link, class_="form-control") }}
+        {{ render_field(form.website_link, class_="form-control") }}
+        <button type="submit" class="btn btn-primary">Update Profile</button>
       </form>
     </div>
+
     <div class="mt-4" id="change_password">
       <h2>Change Password</h2>
       <form method="POST" action="{{ url_for('auth_routes.change_password') }}">
         <div class="form-group">
           <label for="current_password">Current Password</label>
-          <input
-            type="password"
-            class="form-control"
-            id="current_password"
-            name="current_password"
-            required
-          />
+          <input type="password" class="form-control" id="current_password" name="current_password" required>
         </div>
         <div class="form-group">
           <label for="new_password">New Password</label>
-          <input
-            type="password"
-            class="form-control"
-            id="new_password"
-            name="new_password"
-            required
-          />
+          <input type="password" class="form-control" id="new_password" name="new_password" required>
         </div>
         <div class="form-group">
           <label for="confirm_password">Confirm New Password</label>
-          <input
-            type="password"
-            class="form-control"
-            id="confirm_password"
-            name="confirm_password"
-            required
-          />
+          <input type="password" class="form-control" id="confirm_password" name="confirm_password" required>
         </div>
         <button type="submit" class="btn btn-primary">Change Password</button>
       </form>
