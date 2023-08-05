@@ -7,7 +7,12 @@ from wtforms.validators import ValidationError, DataRequired, Email
 from wtforms.fields import SelectMultipleField
 from wtforms_alchemy import ModelForm as WTFormsAlchemyModelForm, QuerySelectMultipleField
 from app.models import User, Project, Role, MeetingDay
+from flask_wtf.file import FileField, FileAllowed
 
+from app.utils.upload_sets import photos
+
+class ProfileUpdateForm(FlaskForm):
+    user_image = FileField('Upload Profile Image', validators=[FileAllowed(photos, 'Images only!')])
 
 class SignupForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired()])

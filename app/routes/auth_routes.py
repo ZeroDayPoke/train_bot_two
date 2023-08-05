@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
 """Auth Routes for the app"""
-from flask import Blueprint, render_template, redirect, url_for, flash, request
+from flask import Blueprint, render_template, redirect, url_for, flash, request, current_app
 from flask_login import login_user, logout_user, login_required, current_user
 from ..models import db, User, Role
-from ..forms import SignupForm, SigninForm
+from ..forms import SignupForm, SigninForm, ProfileUpdateForm
+from ..utils.upload_sets import photos
 
 auth_routes = Blueprint('auth_routes', __name__, url_prefix='/auth')
 
@@ -54,7 +55,8 @@ def signout():
 @auth_routes.route('/account', methods=['GET'])
 @login_required
 def account():
-    return render_template('account.html', current_user=current_user)
+    form = ProfileUpdateForm()
+    return render_template('account.html', current_user=current_user, form=form)
 
 
 @auth_routes.route('/change_password', methods=['POST'])
@@ -79,4 +81,18 @@ def change_password():
     db.session.commit()
 
     flash('Your password has been updated.')
+    return redirect(url_for('auth_routes.account'))
+
+@auth_routes.route('/update_profile', methods=['POST'])
+@login_required
+def update_profile():
+    form = ProfileUpdateForm()
+
+    if form.validate_on_submit():
+        if form.user_image.data:
+            filename = photos.save(form.user_image.data)
+            current_user.image_path = filename
+            db.session.commit()
+            flash('Profile image updated!', 'success')
+
     return redirect(url_for('auth_routes.account'))

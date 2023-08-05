@@ -3,6 +3,7 @@
 # app/routes/main_routes.py
 from flask import render_template, Blueprint
 from flask_login import current_user
+from app.models import User
 
 main_routes = Blueprint('main_routes', __name__, url_prefix='')
 
@@ -12,7 +13,8 @@ def index():
 
 @main_routes.route('/about')
 def about():
-    return render_template('about.html', include_header=True, current_user=current_user)
+    employees = User.query.all()
+    return render_template('about.html', include_header=True, current_user=current_user, employees=employees)
 
 @main_routes.route('/business_plan')
 def business_plan():

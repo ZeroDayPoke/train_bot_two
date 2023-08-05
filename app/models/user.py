@@ -31,6 +31,9 @@ class User(UserMixin, BaseModel):
     verification_token = db.Column(db.String(40), nullable=True)
     verified = db.Column(db.Boolean, default=False)
     token_generated_at = db.Column(db.DateTime, default=datetime.utcnow)
+    github_username = db.Column(db.String(64), unique=True, index=True)
+    image_path = db.Column(db.String(256), nullable=True, default="default_employee.jpg")
+    bio = db.Column(db.String(256), nullable=True)
 
     # Relationships
     roles = relationship('Role', secondary=user_roles,

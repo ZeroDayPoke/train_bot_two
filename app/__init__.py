@@ -1,23 +1,37 @@
 #!/usr/bin/env python
 """Initialize Flask app"""
 
+# Fix for werkzeug bug
+import werkzeug
+werkzeug.secure_filename = werkzeug.utils.secure_filename
+werkzeug.FileStorage = werkzeug.datastructures.FileStorage
+
 from flask import Flask, render_template
 from config import config
+from flask_uploads import configure_uploads
 from flask_login import LoginManager
+
 from app.models import db, User
 from app.routes import main_routes, auth_routes, admin_routes, project_routes
+
+from app.utils.upload_sets import photos
 
 def create_app(config_name='default'):
     app = Flask(__name__)
     app.config.from_object(config[config_name])
-    app.register_blueprint(main_routes)
-    app.register_blueprint(auth_routes)
-    app.register_blueprint(admin_routes)
-    app.register_blueprint(project_routes)
-    app.url_map.strict_slashes = False
+
+    # Initialize Extensions
     login_manager = LoginManager()
     login_manager.init_app(app)
     db.init_app(app)
+    configure_uploads(app, photos)
+
+    # Register Blueprints
+    blueprints = [main_routes, auth_routes, admin_routes, project_routes]
+    for blueprint in blueprints:
+        app.register_blueprint(blueprint)
+
+    app.url_map.strict_slashes = False
 
     @login_manager.user_loader
     def load_user(user_id):
@@ -39,3 +53,4 @@ def create_app(config_name='default'):
         webbrowser.open('http://127.0.0.1:5000')
 
     return app
+

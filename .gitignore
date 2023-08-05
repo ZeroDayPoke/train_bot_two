@@ -2,3 +2,4 @@
 .env
 **/setup/
 config.py
+app/static/images/*
