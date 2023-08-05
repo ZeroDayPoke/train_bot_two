@@ -24,14 +24,29 @@
         <li class="nav-item">
           <a class="nav-link" href="{{ url_for('main_routes.index') }}">Home</a>
         </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{{ url_for('main_routes.about') }}"
+            >About</a
+          >
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{{ url_for('main_routes.business_plan') }}"
+            >Contact</a
+          >
+        </li>
       </ul>
+
       <ul class="navbar-nav nav-account">
         {% if not current_user.is_authenticated %}
         <li class="nav-item">
-          <a class="nav-link" href="{{ url_for('auth_routes.signup') }}">Sign Up</a>
+          <a class="nav-link" href="{{ url_for('auth_routes.signup') }}"
+            >Sign Up</a
+          >
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="{{ url_for('auth_routes.signin') }}">Sign In</a>
+          <a class="nav-link" href="{{ url_for('auth_routes.signin') }}"
+            >Sign In</a
+          >
         </li>
         {% else %}
         <li class="nav-item">
@@ -42,7 +57,9 @@
           >
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="{{ url_for('auth_routes.signout') }}">Sign Out</a>
+          <a class="nav-link" href="{{ url_for('auth_routes.signout') }}"
+            >Sign Out</a
+          >
         </li>
         {% if current_user.is_authenticated and current_user.has_role('C19') %}
         <li class="nav-item">
@@ -51,10 +68,13 @@
           >
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="{{ url_for('project_routes.all_projects') }}"
+          <a
+            class="nav-link"
+            href="{{ url_for('project_routes.all_projects') }}"
             >List Projects</a
           >
-        {% endif %} {% endif %}
+          {% endif %} {% endif %}
+        </li>
       </ul>
     </div>
   </nav>
