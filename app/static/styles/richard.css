@@ -75,3 +75,8 @@ body {
 .carousel-indicators .active {
   background-color: white;
 }
+
+.card {
+  margin-bottom: 1rem;
+  background-color: black;
+}
